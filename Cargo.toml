@@ -1,28 +1,29 @@
 [package]
-name = "eframe_template"
+name = "story_shuffler"
 version = "0.1.0"
-authors = ["Emil Ernerfeldt <emil.ernerfeldt@gmail.com>"]
+authors = ["Todd L Smith <todd@availlang.org>"]
 edition = "2021"
-rust-version = "1.65"
+rust-version = "1.68"
 
-
+# General dependencies.
 [dependencies]
-egui = "0.21.0"
-eframe = { version = "0.21.0", default-features = false, features = [
+color-hex = "0.2.0"
+egui = { version = "0.21.0", features = ["color-hex", "persistence"] }
+eframe = { version = "0.21.3", default-features = false, features = [
     "accesskit",     # Make egui comptaible with screen readers. NOTE: adds a lot of dependencies.
     "default_fonts", # Embed the default egui fonts.
     "glow",          # Use the glow rendering backend. Alternative: "wgpu".
     "persistence",   # Enable restoring app state when restarting the app.
 ] }
+petgraph = "0.6.3"
+regex = "1.7.3"
+serde = { version = "1.0.158", features = ["derive"] }
 
-# You only need serde if you want app persistence:
-serde = { version = "1", features = ["derive"] }
-
-# native:
+# Native dependencies.
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tracing-subscriber = "0.3"
 
-# web:
+# Web dependencies.
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 console_error_panic_hook = "0.1.6"
 tracing-wasm = "0.2"
@@ -30,19 +31,8 @@ wasm-bindgen-futures = "0.4"
 
 
 [profile.release]
-opt-level = 2 # fast and small wasm
-
-# Optimize all dependencies even in debug builds:
-[profile.dev.package."*"]
 opt-level = 2
 
-
-[patch.crates-io]
-
-# If you want to use the bleeding edge version of egui and eframe:
-# egui = { git = "https://github.com/emilk/egui", branch = "master" }
-# eframe = { git = "https://github.com/emilk/egui", branch = "master" }
-
-# If you fork https://github.com/emilk/egui you can test with:
-# egui = { path = "../egui/crates/egui" }
-# eframe = { path = "../egui/crates/eframe" }
+# Optimize all dependencies even in debug builds.
+[profile.dev.package."*"]
+opt-level = 2

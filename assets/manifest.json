@@ -1,6 +1,6 @@
 {
-  "name": "egui Template PWA",
-  "short_name": "egui-template-pwa",
+  "name": "Story Shuffler",
+  "short_name": "story-shuffler",
   "icons": [
     {
       "src": "./icon-256.png",
