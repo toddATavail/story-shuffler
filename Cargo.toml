@@ -3,7 +3,7 @@ name = "story_shuffler"
 version = "1.0.0"
 authors = ["Todd L Smith <todd@availlang.org>"]
 edition = "2021"
-rust-version = "1.68"
+rust-version = "1.65"
 
 # General dependencies.
 [dependencies]
