@@ -951,8 +951,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c05aeb6a22b8f62540c194aac980f2115af067bfe15a0734d7277a768d396b31"
 dependencies = [
  "cfg-if",
+ "js-sys",
  "libc",
  "wasi",
+ "wasm-bindgen",
 ]
 
 [[package]]
@@ -1842,13 +1844,15 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 
 [[package]]
 name = "story_shuffler"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "color-hex",
  "console_error_panic_hook",
  "eframe",
  "egui",
+ "getrandom",
  "petgraph",
+ "rand",
  "regex",
  "serde",
  "tracing-subscriber",
