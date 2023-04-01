@@ -1,5 +1,12 @@
 # Story Shuffler
 
+A writer's companion: a manuscript shuffler that obeys ordering constraints.
+[Try the webapp.](https://toddatavail.github.io/story-shuffler) You can hover
+just about any component for popup help. And don't worry — none of your data
+ever leaves your computer.
+
+--------------------------------------------------------------------------------
+
 A while back my wife Cislyn asked me how hard it would be to build an
 application that could shuffle the sections of a manuscript. Sometimes writers
 would like to try out a different ordering of their sections, but with some

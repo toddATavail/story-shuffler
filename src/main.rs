@@ -34,6 +34,9 @@
 // Hide console window on Windows in release mode.
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+#[cfg(not(target_arch = "wasm32"))]
+use eframe::IconData;
+
 /// Entry point for native execution. Set the environment variable `RUST_LOG` to
 /// `debug` to log to standard output.
 #[cfg(not(target_arch = "wasm32"))]
@@ -45,6 +48,11 @@ fn main() -> eframe::Result<()>
 		eframe::NativeOptions
 		{
 			min_window_size: Some(egui::Vec2::new(1000.0, 720.0)),
+			icon_data: Some(IconData {
+				rgba: include_bytes!("../assets/icon-32.png").to_vec(),
+				width: 32,
+				height: 32
+			}),
 			..Default::default()
 		},
 		Box::new(|cc| Box::new(story_shuffler::StoryShufflerApp::new(cc)))

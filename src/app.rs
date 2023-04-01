@@ -153,7 +153,13 @@ impl StoryShufflerApp
 	/// * Changing the [manuscript](Self::original_manuscript).
 	pub(crate) fn update_sections(&mut self)
 	{
-		if self.delimiter_pattern_is_regex && !self.delimiter_pattern.is_empty()
+		if self.delimiter_pattern.is_empty()
+		{
+			self.delimiter_regex_error = None;
+			self.original_sections = vec![];
+			self.constraints = vec![];
+		}
+		else if self.delimiter_pattern_is_regex
 		{
 			match Regex::new(&self.delimiter_pattern)
 			{
@@ -391,11 +397,10 @@ impl StoryShufflerApp
 					);
 					ui.label(RichText::new("Constraints").strong());
 					ui.label(
-						" section below whenever you submit changes to these \
-						options "
+						" section below whenever you edit these options "
 					);
 					ui.label(RichText::new("or").italics());
-					ui.label(" to your manuscript.");
+					ui.label(" your manuscript.");
 				});
 			});
 			ui.spacing_mut().item_spacing.y = 3.0;
@@ -421,7 +426,7 @@ impl StoryShufflerApp
 				ui.label("Section delimiter: ");
 				if ui.text_edit_singleline(
 					&mut self.delimiter_pattern
-				).lost_focus()
+				).changed()
 				{
 					// The user changed the pattern, which might mandate a new
 					// regex, so update the pattern accordingly.
@@ -510,18 +515,50 @@ impl StoryShufflerApp
 	{
 		CentralPanel::default().show(ctx, |ui| {
 			ui.spacing_mut().item_spacing.y = 10.0;
-			ui.label(
-				"Paste your sectioned manuscript into the text area below \
-				to split it into sections. It is not recommended to edit \
-				the manuscript in place, but you can. None of your data \
-				ever leaves your computer."
-			);
+			ui.vertical_centered(|ui| {
+				heading(ui, "Manuscript").on_hover_ui(|ui| {
+					ui.label(
+						"Paste your manuscript in the large text area below to \
+						get started."
+					);
+				});
+			});
 			ScrollArea::vertical().max_height(550.0).show(ui, |ui| {
-				if ui.add(
+				let text_area = ui.add(
 					TextEdit::multiline(&mut self.original_manuscript)
 						.desired_width(f32::INFINITY)
 						.desired_rows(30)
-				).changed()
+				);
+				text_area.clone().on_hover_ui(|ui| {
+					ui.vertical(|ui| {
+						ui.label("Here's the basic application workflow:");
+						ui.label("• Paste your manuscript here.");
+						ui.label("• Set the section delimiter.");
+						ui.label("• Set any ordering constraints.");
+						ui.horizontal_wrapped(|ui| {
+							ui.spacing_mut().item_spacing.x = 0.0;
+							ui.label("• ");
+							ui.label(RichText::new("🎲 Shuffle").strong());
+							ui.label(" until you get an ordering you like.");
+						});
+						ui.horizontal_wrapped(|ui| {
+							ui.spacing_mut().item_spacing.x = 0.0;
+							ui.label("• ");
+							ui.label(
+								RichText::new("📋 Copy to clipboard").strong()
+							);
+							ui.label(".");
+						});
+						ui.label(
+							"• Paste your new manuscript into an external document."
+						);
+						ui.label(
+							"You can hover almost every component or label \
+							for additional help."
+						);
+					});
+				});
+				if text_area.changed()
 				{
 					self.update_sections();
 				}
